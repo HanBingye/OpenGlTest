@@ -1,0 +1,10 @@
+afterEvaluate {
+    task zip(type: Zip) {
+        archiveName "outputs.zip"// 输出的文件名字
+        destinationDir file("${buildDir}/custom")// 输出的文件存放的文件夹
+        from {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE//排除相同的文件
+            tasks.getByName("packageDebug").outputs.files// 输入的文件
+        }
+    }
+}

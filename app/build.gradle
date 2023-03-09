@@ -1,0 +1,80 @@
+plugins {
+    id 'com.android.application'
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+//apply from: '../script.gradle'
+apply plugin: MyPlugin
+android {
+    compileSdk 33
+
+    defaultConfig {
+        configurations.all {
+            resolutionStrategy {
+                force "androidx.core:core-ktx:1.6.0"
+            }
+        }
+        applicationId "com.bing.test2"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+}
+
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'io.github.youth5201314:banner:2.2.2'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.otaliastudios.gif:compressor:1.0.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
+
+
+}
+
+class MyPlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project target) {
+
+        target.afterEvaluate {
+            target.task(type: Zip, "zip") {//第二个参数要指定是哪个方法
+                archiveName "outputs.zip"// 输出的文件名字
+                destinationDir target.file("${target.buildDir}/custom")// 输出的文件存放的文件夹
+                from {
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                    target.tasks.getByName("packageDebug").outputs.files// 输入的文件
+                }
+            }
+        }
+    }
+
+}
+
+
