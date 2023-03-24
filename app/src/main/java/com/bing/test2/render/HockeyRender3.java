@@ -12,14 +12,13 @@ import static android.opengl.Matrix.translateM;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 
 import com.bing.test2.R;
-import com.bing.test2.bean.ColorShaderProgram2;
+import com.bing.test2.program.ColorShaderProgram2;
 import com.bing.test2.bean.Mallet2;
 import com.bing.test2.bean.Puck;
 import com.bing.test2.bean.Table;
-import com.bing.test2.bean.TextureShaderProgram;
+import com.bing.test2.program.TextureShaderProgram;
 import com.bing.test2.util.MatrixHelper;
 import com.bing.test2.util.TextureHelper;
 

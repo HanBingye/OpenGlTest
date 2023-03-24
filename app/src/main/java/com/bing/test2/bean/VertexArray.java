@@ -29,4 +29,10 @@ public class VertexArray {
         GLES20.glEnableVertexAttribArray(location);
         floatBuffer.position(0);
     }
+
+    public void updateBuffer(float[] vertexData, int start, int count) {
+        floatBuffer.position(start);
+        floatBuffer.put(vertexData, start, count);
+        floatBuffer.position(0);
+    }
 }

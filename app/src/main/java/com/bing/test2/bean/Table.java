@@ -4,6 +4,8 @@ import static android.opengl.GLES20.GL_TRIANGLE_FAN;
 import static android.opengl.GLES20.glDrawArrays;
 import static com.bing.test2.Constants.BYTES_PRE_FLOAT;
 
+import com.bing.test2.program.TextureShaderProgram;
+
 public class Table {
     private static final int POSITION_COUNT = 2;
     private static final int TEXTURE_COUNT = 2;

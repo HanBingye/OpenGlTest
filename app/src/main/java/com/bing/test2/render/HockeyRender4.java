@@ -14,14 +14,13 @@ import static android.opengl.Matrix.translateM;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 
 import com.bing.test2.R;
-import com.bing.test2.bean.ColorShaderProgram2;
+import com.bing.test2.program.ColorShaderProgram2;
 import com.bing.test2.bean.Mallet2;
 import com.bing.test2.bean.Puck;
 import com.bing.test2.bean.Table;
-import com.bing.test2.bean.TextureShaderProgram;
+import com.bing.test2.program.TextureShaderProgram;
 import com.bing.test2.util.Geometry;
 import com.bing.test2.util.Geometry.Point;
 import com.bing.test2.util.Geometry.Ray;
@@ -50,6 +49,13 @@ public class HockeyRender4 implements GLSurfaceView.Renderer {
     private Puck puck;
     private boolean malletPressed = false;//跟踪木槌是否被按到
     private Point malletPosition;//存储木槌的位置
+    private final float leftBound = -0.5f;
+    private final float rightBound = 0.5f;
+    private final float farBound = -0.8f;
+    private final float nearBound = 0.8f;
+    private Point preMalletPosition;
+    private Point puckPosition;
+    private Vector puckVector;
 
 
     public HockeyRender4(Context context) {
@@ -67,6 +73,8 @@ public class HockeyRender4 implements GLSurfaceView.Renderer {
         colorProgram = new ColorShaderProgram2(context);
         texture = TextureHelper.loadTexture(context, R.drawable.air_hockey_surface);
         malletPosition = new Point(0f,mallet.height/2f,0.4f);
+        puckPosition = new Point(0f,puck.height/2f,0f);
+        puckVector = new Vector(0f,0f,0f);
 
     }
 
@@ -76,7 +84,7 @@ public class HockeyRender4 implements GLSurfaceView.Renderer {
         glViewport(0, 0, width, height);
         MatrixHelper.perspectiveM(projectionMatrix,45,(float) width/height,1f,10f);
         //初始化视图矩阵
-        setLookAtM(viewMatrix, 0, 0f, 1.2f, 2.2f, 0f, 0f, 0f, 0f, 1f, 0f);
+        setLookAtM(viewMatrix, 0, 0f, 1.2f, 2.8f, 0f, 0f, 0f, 0f, 1f, 0f);
 
     }
 
@@ -105,7 +113,24 @@ public class HockeyRender4 implements GLSurfaceView.Renderer {
 
         mallet.draw();
 
-        positionObjectInScene(0f, puck.height / 2f, 0f);
+        puckPosition = puckPosition.translate(puckVector);
+        if (puckPosition.x < leftBound + puck.radius
+                || puckPosition.x > rightBound - puck.radius) {
+            puckVector = new Vector(-puckVector.x, puckVector.y, puckVector.z);
+            puckVector = puckVector.scale(0.9f);
+        }
+        if (puckPosition.z < farBound + puck.radius
+                || puckPosition.z > nearBound - puck.radius) {
+            puckVector = new Vector(puckVector.x, puckVector.y, -puckVector.z);
+            puckVector = puckVector.scale(0.9f);
+        }
+        puckPosition = new Point(
+                clamp(puckPosition.x, leftBound + puck.radius, rightBound - puck.radius),
+                puckPosition.y,
+                clamp(puckPosition.z, farBound + puck.radius, nearBound - puck.radius)
+        );
+        puckVector = puckVector.scale(0.99f);
+        positionObjectInScene(puckPosition.x, puckPosition.y, puckPosition.z);
         colorProgram.setUniforms(modelViewProjectionMatrix, 1f, 1f, 0f);
         puck.bindData(colorProgram);
         puck.draw();
@@ -136,7 +161,19 @@ public class HockeyRender4 implements GLSurfaceView.Renderer {
             Ray ray = convertNormalized2DPointToRay(normalizedX, normalizedY);
             Plane plane = new Plane(new Point(0, 0, 0), new Vector(0, 1, 0));
             Point point = Geometry.intersectionPoint(ray, plane);
-            malletPosition = new Point(point.x,mallet.height/2,point.z);
+            preMalletPosition = malletPosition;
+            malletPosition = new Point(
+                    clamp(point.x,
+                    leftBound + mallet.radius,
+                    rightBound - mallet.radius),
+                    mallet.height / 2f,
+                    clamp(point.z,
+                            0f + mallet.radius,
+                            nearBound - mallet.radius));
+            float distance = Geometry.vectorBetween(malletPosition,puckPosition).length();
+            if(distance < (puck.radius + mallet.radius)){
+                puckVector = Geometry.vectorBetween(preMalletPosition,malletPosition);
+            }
         }
     }
 
@@ -178,5 +215,8 @@ public class HockeyRender4 implements GLSurfaceView.Renderer {
         vector[0] /= vector[3];
         vector[1] /= vector[3];
         vector[2] /= vector[3];
+    }
+    private float clamp(float value, float min, float max) {
+        return Math.min(max, Math.max(value, min));
     }
 }

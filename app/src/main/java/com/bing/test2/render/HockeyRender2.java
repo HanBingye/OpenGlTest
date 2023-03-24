@@ -1,14 +1,6 @@
 package com.bing.test2.render;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
-import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_LINES;
-import static android.opengl.GLES20.GL_POINTS;
-import static android.opengl.GLES20.GL_TRIANGLE_FAN;
-import static android.opengl.GLES20.glClear;
-import static android.opengl.GLES20.glClearColor;
-import static android.opengl.GLES20.glDrawArrays;
-import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glViewport;
 
 import android.content.Context;
@@ -17,18 +9,12 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
 import com.bing.test2.R;
-import com.bing.test2.bean.ColorShaderProgram;
+import com.bing.test2.program.ColorShaderProgram;
 import com.bing.test2.bean.Mallet;
 import com.bing.test2.bean.Table;
-import com.bing.test2.bean.TextureShaderProgram;
+import com.bing.test2.program.TextureShaderProgram;
 import com.bing.test2.util.MatrixHelper;
-import com.bing.test2.util.ResourceUtils;
-import com.bing.test2.util.ShaderHelper;
 import com.bing.test2.util.TextureHelper;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

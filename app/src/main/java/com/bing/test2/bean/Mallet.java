@@ -1,9 +1,10 @@
 package com.bing.test2.bean;
 
 import static android.opengl.GLES20.GL_POINTS;
-import static android.opengl.GLES20.GL_TRIANGLE_FAN;
 import static android.opengl.GLES20.glDrawArrays;
 import static com.bing.test2.Constants.BYTES_PRE_FLOAT;
+
+import com.bing.test2.program.ColorShaderProgram;
 
 public class Mallet {
     private static final int POSITION_COUNT = 2;

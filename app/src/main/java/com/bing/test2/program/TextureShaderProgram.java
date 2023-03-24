@@ -1,4 +1,4 @@
-package com.bing.test2.bean;
+package com.bing.test2.program;
 
 import android.content.Context;
 import android.opengl.GLES20;

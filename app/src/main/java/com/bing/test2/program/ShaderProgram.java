@@ -1,4 +1,4 @@
-package com.bing.test2.bean;
+package com.bing.test2.program;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -13,6 +13,9 @@ abstract class ShaderProgram {
     protected static final String U_MATRIX = "u_Matrix";
     protected static final String U_TEXTURE_UNIT = "u_TextureUnit";
     protected static final String A_TEXTURE_COORDINATES = "a_TextureCoordinates";
+    protected static final String U_TIME = "u_Time";
+    protected static final String A_DIRECTION_VECTOR = "a_DirectionVector";
+    protected static final String A_PARTICLE_START_TIME = "a_ParticleStartTime";
     protected final int program;
 
     public ShaderProgram(Context context,int vertexResourceID,int fragmentResourceID){
