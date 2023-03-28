@@ -9,7 +9,7 @@ import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGenBuffers;
 import static android.opengl.GLES20.glVertexAttribPointer;
 
-import static com.bing.test2.Constants.BYTES_PRE_FLOAT;
+import static com.bing.test2.Constants.BYTES_PER_FLOAT;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -31,13 +31,13 @@ public class VertexBuffer {
         glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 
         FloatBuffer vertexArray = ByteBuffer
-                .allocateDirect(vertexData.length * BYTES_PRE_FLOAT)
+                .allocateDirect(vertexData.length * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
                 .put(vertexData);
         vertexArray.position(0);
         //GL_STATIC_DRAW 这个对象将被修改一次，但是会经常使用 （这些只是提示，而不是限制，所以OpenGL可以根据需要做任何优化。大多数情况下，我们都使用GL_ STATIC DRAW）
-        glBufferData(GL_ARRAY_BUFFER, vertexArray.capacity() * BYTES_PRE_FLOAT,
+        glBufferData(GL_ARRAY_BUFFER, vertexArray.capacity() * BYTES_PER_FLOAT,
                 vertexArray, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);

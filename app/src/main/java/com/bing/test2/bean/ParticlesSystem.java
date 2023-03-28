@@ -2,7 +2,7 @@ package com.bing.test2.bean;
 
 import static android.opengl.GLES20.GL_POINTS;
 import static android.opengl.GLES20.glDrawArrays;
-import static com.bing.test2.Constants.BYTES_PRE_FLOAT;
+import static com.bing.test2.Constants.BYTES_PER_FLOAT;
 
 import android.graphics.Color;
 
@@ -21,7 +21,7 @@ public class ParticlesSystem {
                     + VECTOR_COMPONENT_COUNT
                     + PARTICLE_START_TIME_COMPONENT_COUNT;
 
-    private static final int STRIDE = TOTAL_COMPONENT_COUNT * BYTES_PRE_FLOAT;
+    private static final int STRIDE = TOTAL_COMPONENT_COUNT * BYTES_PER_FLOAT;
     private final float[] particles;
     private final VertexArray vertexArray;
     private final int maxCount;

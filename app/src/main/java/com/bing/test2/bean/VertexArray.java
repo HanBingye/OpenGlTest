@@ -1,7 +1,7 @@
 package com.bing.test2.bean;
 
 import static android.opengl.GLES20.GL_FLOAT;
-import static com.bing.test2.Constants.BYTES_PRE_FLOAT;
+import static com.bing.test2.Constants.BYTES_PER_FLOAT;
 
 import android.opengl.GLES20;
 
@@ -16,7 +16,7 @@ public class VertexArray {
     public VertexArray(float[] vertex) {
         //将数据写入缓冲区
         floatBuffer = ByteBuffer
-                .allocateDirect(vertex.length * BYTES_PRE_FLOAT)
+                .allocateDirect(vertex.length * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
                 .put(vertex);
